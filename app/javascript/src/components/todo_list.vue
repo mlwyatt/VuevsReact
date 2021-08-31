@@ -1,23 +1,3 @@
-<script>
-  export default {
-    name: 'TodoList',
-    data() {
-      return {
-        todoItems: []
-      };
-    },
-    created() {
-      fetch('/api/v1/todo_items')
-        .then(resp => resp.json())
-        .then(a => {
-          this.todoItems = a
-        })
-        .catch(error => console.log(error))
-      ;
-    }
-  }
-</script>
-
 <template>
   <table id="todo_items">
     <thead>
@@ -32,7 +12,7 @@
         <td>{{todoItem.description}}</td>
         <td>{{todoItem.completed ? 'Yes' : 'No'}}</td>
         <td>
-          <a :href="`todo_items/${todoItem.id}/edit`">Edit</a>
+          <router-link :to="{ name: 'edit_todo_item_path', params: {id: todoItem.id} }">Edit</router-link>
         </td>
       </tr>
     </tbody>
@@ -41,9 +21,21 @@
         <th>&nbsp;</th>
         <th>&nbsp;</th>
         <th>
-          <a href="todo_items/new">New</a>
+          <router-link :to="{ name: 'new_todo_item_path' }">New</router-link>
         </th>
       </tr>
     </tfoot>
   </table>
 </template>
+
+<script>
+  export default {
+    name: 'TodoList',
+    data() {
+      return this.$store.state.TodoItemStore;
+    },
+    mounted: function() {
+      this.$store.dispatch('TodoItemStore/index');
+    }
+  }
+</script>

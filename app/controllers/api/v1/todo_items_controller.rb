@@ -32,7 +32,7 @@ module Api
       private
 
         def todo_item_params
-          params.require(:todo_item).permit(
+          params.fetch(:todo_item,{}).permit(
             :id, :description, :completed
           )
         end
